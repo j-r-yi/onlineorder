@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    # DATABASE_URL etc are environment variables, if not defined use the default value after ":"
+    # They are important for when we want to connect to database on cloud servers
+    url: jdbc:postgresql://${DATABASE_URL:localhost}:${DATABASE_PORT:5432}/onlineorder
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+
+  # One of Spring's library, converts Java and JSON
+  jackson:
+    # Only includes fields that are not null
+    default-property-inclusion: non_null
+    # Naming convention snake case instead of default camel casing
+    property-naming-strategy: SNAKE_CASE
+
+  sql:
+    init:
+      mode: ${INIT_DB:always}
+      schema-locations: "classpath:database-init.sql"
+
+# Third Party Application
+logging:
+  level:
+    # Trace Prints detailed logs
+    org.apache.coyote.http11.Http11InputBuffer: TRACE # Incoming HTTP requests
+    org.springframework.jdbc.datasource.init: DEBUG
