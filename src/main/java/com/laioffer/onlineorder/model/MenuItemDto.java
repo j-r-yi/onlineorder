@@ -4,6 +4,7 @@ package com.laioffer.onlineorder.model;
 import com.laioffer.onlineorder.entity.MenuItemEntity;
 
 // Doesn't include restaurant ID
+    // "Single source of truth"
 public record MenuItemDto(
         Long id,
         String name,
