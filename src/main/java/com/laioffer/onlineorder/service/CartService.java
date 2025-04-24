@@ -9,6 +9,8 @@ import com.laioffer.onlineorder.model.OrderItemDto;
 import com.laioffer.onlineorder.repository.CartRepository;
 import com.laioffer.onlineorder.repository.MenuItemRepository;
 import com.laioffer.onlineorder.repository.OrderItemRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,7 @@ public class CartService {
 
 
     // ACID, default is isolated
+    @CacheEvict(cacheNames = "cart", key = "#customerId") // Cache Evict so that updates cache each time
     @Transactional
     public void addMenuItemToCart(long customerId, long menuItemId) {
         CartEntity cart = cartRepository.getByCustomerId(customerId);
@@ -69,6 +72,7 @@ public class CartService {
 
 
     // Get list of all order items
+    @Cacheable("cart")
     public CartDto getCart(Long customerId) {
         CartEntity cart = cartRepository.getByCustomerId(customerId);
         List<OrderItemEntity> orderItems = orderItemRepository.getAllByCartId(cart.id());
@@ -78,6 +82,7 @@ public class CartService {
 
 
     // No true transactional features, only clears the cart after frontend checkout request
+    @CacheEvict(cacheNames = "cart", key = "#customerId") // Cache Evict so that updates cache each time
     @Transactional
     public void clearCart(Long customerId) {
         CartEntity cartEntity = cartRepository.getByCustomerId(customerId);

@@ -19,6 +19,12 @@ spring:
       mode: ${INIT_DB:always}
       schema-locations: "classpath:database-init.sql"
 
+  # TTL expire after write, means 60 seconds after writing to cache it gets deleted
+      # expire after read means if read between (interval) it will keep it alive
+  cache:
+    caffeine:
+      spec: expireAfterWrite=60s
+
 # Third Party Application
 logging:
   level:
