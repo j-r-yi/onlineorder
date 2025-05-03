@@ -27,6 +27,9 @@ import java.util.Set;
 public class CartServiceTests {
 
 
+
+    // Create mock repositories and service to test
+        // will not actually connect to database, just mock the repository calls
     @Mock
     private CartRepository cartRepository;
 
@@ -50,7 +53,7 @@ public class CartServiceTests {
 
     @Test
     void addMenuItemToCart_whenOrderNotExist_shouldCreateOneOrderItem() {
-        // Mock data
+        // Mock data and setup
         long customerId = 1L;
         long menuItemId = 2L;
         long cartId = 3L;
